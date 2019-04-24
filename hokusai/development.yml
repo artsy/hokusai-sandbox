@@ -1,0 +1,9 @@
+---
+version: '2'
+services:
+  hokusai-sandbox:
+    extends:
+      file: build.yml
+      service: hokusai-sandbox
+    ports:
+      - 8080:8080

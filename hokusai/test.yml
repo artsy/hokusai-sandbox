@@ -1,0 +1,10 @@
+---
+version: '2'
+services:
+  hokusai-sandbox:
+    command: ["go", "test"]
+    environment:
+      - CGO_ENABLED=0
+    extends:
+      file: build.yml
+      service: hokusai-sandbox
