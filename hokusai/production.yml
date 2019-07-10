@@ -1,11 +1,16 @@
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: hokusai-sandbox-web
   namespace: default
 spec:
   replicas: 2
+  selector:
+    matchLabels:
+      app: hokusai-sandbox
+      component: web
+      layer: application
   strategy:
     rollingUpdate:
       maxSurge: 1
