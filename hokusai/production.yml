@@ -4,6 +4,10 @@ kind: Deployment
 metadata:
   name: hokusai-sandbox-web
   namespace: default
+  labels:
+    app: hokusai-sandbox
+    component: web
+    layer: application
 spec:
   replicas: 2
   selector:
