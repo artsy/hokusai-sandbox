@@ -6,6 +6,11 @@ metadata:
   namespace: default
 spec:
   replicas: 2
+  selector:
+    matchLabels:
+      app: hokusai-sandbox-canary
+      component: web
+      layer: application
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -14,7 +19,7 @@ spec:
   template:
     metadata:
       labels:
-        app: hokusai-sandbox
+        app: hokusai-sandbox-canary
         component: web
         layer: application
       name: hokusai-sandbox-web-canary
@@ -22,7 +27,7 @@ spec:
       containers:
       - env:
           - name: PORT
-            value: 3000
+            value: "3000"
         envFrom:
         - configMapRef:
             name: hokusai-sandbox-environment
