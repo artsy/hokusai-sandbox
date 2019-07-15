@@ -1,5 +1,6 @@
 ---
 project-name: hokusai-sandbox
+git-remote: git@github.com:artsy/hokusai-sandbox.git
 hokusai-required-version: ">=0.5.6"
 pre-deploy: echo Ohai
 post-deploy: echo Bai
