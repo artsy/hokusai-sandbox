@@ -17,6 +17,6 @@ func main() {
 	if len(port) == 0 {
 		port = "8080"
 	}
-	fmt.Fprintf(os.Stderr, fmt.Sprintf("Listening on port %s...\n", port))
+	fmt.Fprintf(os.Stderr, fmt.Sprintf("Sup, listening on port %s...\n", port))
 	log.Fatal(http.ListenAndServe(fmt.Sprintf("0.0.0.0:%s", port), nil))
 }
