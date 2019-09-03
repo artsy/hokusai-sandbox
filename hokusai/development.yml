@@ -5,5 +5,12 @@ services:
     extends:
       file: build.yml
       service: hokusai-sandbox
+    environment:
+      - RABBITMQ_HOST=amqp://guest:guest@hokusai-sandbox-rabbitmq:5672/
     ports:
       - 8080:8080
+  hokusai-sandbox-rabbitmq:
+    image: rabbitmq:3.6.6-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
