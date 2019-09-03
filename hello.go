@@ -23,11 +23,7 @@ func failOnError(err error, msg string) {
 	}
 }
 
-func pub() {
-	rabbitmq_host := os.Getenv("RABBITMQ_HOST")
-	if len(rabbitmq_host) == 0 {
-		rabbitmq_host = "amqp://guest:guest@localhost:5672/"
-	}
+func pub(rabbitmq_host string) {
 	conn, err := amqp.Dial(rabbitmq_host)
 	failOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()
@@ -63,11 +59,7 @@ func pub() {
 	}
 }
 
-func sub() {
-	rabbitmq_host := os.Getenv("RABBITMQ_HOST")
-	if len(rabbitmq_host) == 0 {
-		rabbitmq_host = "amqp://guest:guest@localhost:5672/"
-	}
+func sub(rabbitmq_host string) {
 	conn, err := amqp.Dial(rabbitmq_host)
 	failOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()
@@ -116,8 +108,20 @@ func main() {
 	if len(port) == 0 {
 		port = "8080"
 	}
-	go pub()
-	go sub()
+
+	rabbitmq_host := os.Getenv("RABBITMQ_HOST")
+	if len(rabbitmq_host) == 0 {
+		rabbitmq_host = "amqp://guest:guest@localhost:5672/"
+	}
+
+	if os.Getenv("ENABLE_PUBLISH") != "" {
+		go pub(rabbitmq_host)
+	}
+
+	if os.Getenv("ENABLE_SUBSCRIBE") != "" {
+		go sub(rabbitmq_host)
+	}
+
 	fmt.Fprintf(os.Stderr, fmt.Sprintf("Listening on port %s...\n", port))
 	log.Fatal(http.ListenAndServe(fmt.Sprintf("0.0.0.0:%s", port), nil))
 }
