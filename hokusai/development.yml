@@ -9,6 +9,8 @@ services:
       - RABBITMQ_HOST=amqp://guest:guest@hokusai-sandbox-rabbitmq:5672/
     ports:
       - 8080:8080
+    depends_on:
+      - hokusai-sandbox-rabbitmq
   hokusai-sandbox-rabbitmq:
     image: rabbitmq:3.6.6-management-alpine
     ports:
