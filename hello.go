@@ -11,7 +11,6 @@ import (
 	"image/color"
 	"image/png"
 	"strconv"
-	"strings"
 	"github.com/streadway/amqp"
 )
 
@@ -36,8 +35,8 @@ func pixel (w http.ResponseWriter, r *http.Request) {
 		log.Println("unable to write image.")
 	}
 	params := r.URL.Query()
-	if params["ray-id"] != nil {
-     fmt.Println("Ray ID: ", strings.Join(params["ray-id"], ","))
+	if params.Get("ray-id") != "" && params.Get("client-ip") != "" {
+		log.Printf("Cloudflare Error -- Ray ID: %s -- Client IP: %s", params.Get("ray-id"), params.Get("client-ip"))
 	}
 
 }
