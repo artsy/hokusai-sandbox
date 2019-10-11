@@ -6,6 +6,12 @@ import (
 	"log"
 	"net/http"
 	"time"
+	"bytes"
+	"image"
+	"image/color"
+	"image/png"
+	"strconv"
+	"strings"
 	"github.com/streadway/amqp"
 )
 
@@ -15,6 +21,25 @@ func root(w http.ResponseWriter, r *http.Request) {
 
 func ping (w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "PONG")
+}
+
+func pixel (w http.ResponseWriter, r *http.Request) {
+	img := image.NewRGBA(image.Rect(0, 0, 1, 1))
+	img.Set(1, 1, color.RGBA{0, 0, 0, 0})
+	buffer := new(bytes.Buffer)
+	if err := png.Encode(buffer, img); err != nil {
+		log.Println("unable to encode image.")
+	}
+	w.Header().Set("Content-Type", "image/png")
+	w.Header().Set("Content-Length", strconv.Itoa(len(buffer.Bytes())))
+	if _, err := w.Write(buffer.Bytes()); err != nil {
+		log.Println("unable to write image.")
+	}
+	params := r.URL.Query()
+	if params["ray-id"] != nil {
+     fmt.Println("Ray ID: ", strings.Join(params["ray-id"], ","))
+	}
+
 }
 
 func failOnError(err error, msg string) {
@@ -104,6 +129,7 @@ func sub(rabbitmq_host string) {
 func main() {
 	http.HandleFunc("/", root)
 	http.HandleFunc("/ping", ping)
+	http.HandleFunc("/pixel.png", pixel)
 	port := os.Getenv("PORT")
 	if len(port) == 0 {
 		port = "8080"
