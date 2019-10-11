@@ -36,11 +36,19 @@ spec:
           image: 585031190124.dkr.ecr.us-east-1.amazonaws.com/hokusai-sandbox:production
           imagePullPolicy: Always
           ports:
-            - containerPort: 8080
+            - name: http
+              containerPort: 8080
 ---
 apiVersion: v1
 kind: Service
 metadata:
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+    service.beta.kubernetes.io/aws-load-balancer-connection-draining-enabled: 'true'
+    service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: '300'
+    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: 'true'
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:iam::585031190124:server-certificate/2018-01-17_artsy-net-wildcard
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: '443'
   labels:
     app: hokusai-sandbox
     component: web
@@ -49,11 +57,17 @@ metadata:
   namespace: default
 spec:
   ports:
-    - port: 80
-      protocol: TCP
-      targetPort: 8080
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  - name: https
+    port: 443
+    protocol: TCP
+    targetPort: http
   selector:
     app: hokusai-sandbox
     component: web
     layer: application
-  type: ClusterIP
+  sessionAffinity: None
+  type: LoadBalancer
