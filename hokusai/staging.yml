@@ -1,18 +1,20 @@
+# prettier-ignore
+
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hokusai-sandbox-web
+  name: {{ project_name }}-web
   namespace: default
   labels:
-    app: hokusai-sandbox
+    app: {{ project_name }}
     component: web
     layer: application
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: hokusai-sandbox
+      app: {{ project_name }}
       component: web
       layer: application
   strategy:
@@ -23,21 +25,22 @@ spec:
   template:
     metadata:
       labels:
-        app: hokusai-sandbox
+        app: {{ project_name }}
         component: web
         layer: application
-      name: hokusai-sandbox-web
+      name: {{ project_name }}-web
     spec:
       containers:
       - envFrom:
         - configMapRef:
-            name: hokusai-sandbox-environment
-        image: 585031190124.dkr.ecr.us-east-1.amazonaws.com/hokusai-sandbox:staging
+            name: {{ project_name }}-environment
+        image: {{ project_repo }}:staging
         imagePullPolicy: Always
-        name: hokusai-sandbox-web
+        name: {{ project_name }}-web
         ports:
         - name: http
           containerPort: 8080
+
 ---
 apiVersion: v1
 kind: Service
@@ -47,13 +50,13 @@ metadata:
     service.beta.kubernetes.io/aws-load-balancer-connection-draining-enabled: 'true'
     service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: '300'
     service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: 'true'
-    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:iam::585031190124:server-certificate/2018-01-17_artsy-net-wildcard
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: {{ artsyNetWildcardSSLCert }}
     service.beta.kubernetes.io/aws-load-balancer-ssl-ports: '443'
   labels:
-    app: hokusai-sandbox
+    app: {{ project_name }}
     component: web
     layer: application
-  name: hokusai-sandbox-web
+  name: {{ project_name }}-web
   namespace: default
 spec:
   ports:
@@ -66,7 +69,7 @@ spec:
     protocol: TCP
     targetPort: http
   selector:
-    app: hokusai-sandbox
+    app: {{ project_name }}
     component: web
     layer: application
   sessionAffinity: None
