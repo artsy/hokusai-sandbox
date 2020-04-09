@@ -1,14 +1,16 @@
+# prettier-ignore
+
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: hokusai-sandbox-web-canary
+  name: {{ project_name }}-web-canary
   namespace: default
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: hokusai-sandbox-canary
+      app: {{ project_name }}-canary
       component: web
       layer: application
   strategy:
@@ -19,10 +21,10 @@ spec:
   template:
     metadata:
       labels:
-        app: hokusai-sandbox-canary
+        app: {{ project_name }}-canary
         component: web
         layer: application
-      name: hokusai-sandbox-web-canary
+      name: {{ project_name }}-web-canary
     spec:
       containers:
       - env:
@@ -30,10 +32,10 @@ spec:
             value: "3000"
         envFrom:
         - configMapRef:
-            name: hokusai-sandbox-environment
-        image: 585031190124.dkr.ecr.us-east-1.amazonaws.com/hokusai-sandbox:staging
+            name: {{ project_name }}-environment
+        image: {{ project_repo }}:staging
         imagePullPolicy: Always
-        name: hokusai-sandbox-web
+        name: {{ project_name }}-web
         ports:
         - name: http
           containerPort: 3000

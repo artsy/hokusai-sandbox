@@ -1,6 +1,8 @@
 ---
 project-name: hokusai-sandbox
 git-remote: git@github.com:artsy/hokusai-sandbox.git
-hokusai-required-version: ">=0.5.6"
+hokusai-required-version: ">=0.5.8"
 pre-deploy: echo Ohai
 post-deploy: echo Bai
+template-config-files:
+  - s3://artsy-citadel/k8s/hokusai-vars.yml
