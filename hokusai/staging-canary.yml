@@ -1,3 +1,5 @@
+# prettier-ignore
+
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
