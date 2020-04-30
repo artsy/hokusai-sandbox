@@ -3,7 +3,7 @@ version: '2'
 services:
   hokusai-sandbox:
     extends:
-      file: build.yml
+      file: build.yaml
       service: hokusai-sandbox
     environment:
       - RABBITMQ_HOST=amqp://guest:guest@hokusai-sandbox-rabbitmq:5672/
