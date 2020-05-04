@@ -40,6 +40,7 @@ spec:
         ports:
         - name: http
           containerPort: 8080
+{% filter indent(width=6, first=True) %}{% include 'templates/dns.yml.j2' %}{% endfilter %}
 
 ---
 apiVersion: v1
