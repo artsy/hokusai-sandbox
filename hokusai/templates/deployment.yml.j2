@@ -1,0 +1,41 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ project_name }}-web
+  namespace: default
+  labels:
+    app: {{ project_name }}
+    component: web
+    layer: application
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ project_name }}
+      component: web
+      layer: application
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: {{ project_name }}
+        component: web
+        layer: application
+      name: {{ project_name }}-web
+    spec:
+      containers:
+      - envFrom:
+        - configMapRef:
+            name: {{ project_name }}-environment
+        image: {{ project_repo }}:{{ deployment_tag }}
+        imagePullPolicy: Always
+        name: {{ project_name }}-web
+        ports:
+        - name: http
+          containerPort: 8080
+{% filter indent(width=6, first=True) %}{% include 'templates/dns.yml.j2' %}{% endfilter %}

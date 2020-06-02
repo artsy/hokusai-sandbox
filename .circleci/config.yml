@@ -28,6 +28,7 @@ workflows:
       # pre-staging
       - hokusai/test:
           name: test
+          filename: ./hokusai/test.yml.j2
           <<: *not_staging_or_release
 
       # staging

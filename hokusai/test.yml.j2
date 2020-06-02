@@ -1,10 +1,10 @@
 ---
 version: '2'
 services:
-  hokusai-sandbox:
+  {{ project_name }}:
     command: ["go", "test"]
     environment:
       - CGO_ENABLED=0
     extends:
       file: build.yml
-      service: hokusai-sandbox
+      service: {{ project_name }}
