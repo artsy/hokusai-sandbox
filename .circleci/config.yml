@@ -28,26 +28,22 @@ workflows:
       # pre-staging
       - hokusai/test:
           name: test
-          e: beta
           filename: ./hokusai/test.yml.j2
           <<: *not_staging_or_release
 
       # staging
       - hokusai/push:
           name: push-staging-image
-          e: beta
           <<: *only_master
           requires:
             - test
 
       - hokusai/deploy-staging:
           <<: *only_master
-          e: beta
           project-name: hokusai-sandbox
           requires:
             - push-staging-image
 
       # release
       - hokusai/deploy-production:
-          e: beta
           <<: *only_release
