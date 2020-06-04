@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  hokusai: artsy/hokusai@0.7.2
+  hokusai: artsy/hokusai@dev:7140b0e073a71f7f54959c178c0caec5
 
 not_staging_or_release: &not_staging_or_release
   filters:
@@ -28,22 +28,26 @@ workflows:
       # pre-staging
       - hokusai/test:
           name: test
+          executor: beta
           filename: ./hokusai/test.yml.j2
           <<: *not_staging_or_release
 
       # staging
       - hokusai/push:
           name: push-staging-image
+          executor: beta
           <<: *only_master
           requires:
             - test
 
       - hokusai/deploy-staging:
           <<: *only_master
+          executor: beta
           project-name: hokusai-sandbox
           requires:
             - push-staging-image
 
       # release
       - hokusai/deploy-production:
+          executor: beta
           <<: *only_release
