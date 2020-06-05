@@ -4,20 +4,6 @@ orbs:
   hokusai: artsy/hokusai@dev:7140b0e073a71f7f54959c178c0caec5
   artsy-remote-docker: artsy/remote-docker@dev:7140b0e073a71f7f54959c178c0caec5
 
-jobs:
-  test:
-    docker:
-      - image: artsy/hokusai:0.5.10
-    steps:
-      - add_ssh_keys
-      - checkout
-      - setup_remote_docker
-      - run: hokusai registry pull --tag "$CIRCLE_SHA1"
-      - run:
-          name: Test
-          command: hokusai test --no-build
-          no_output_timeout: 3600s
-
 not_staging_or_release: &not_staging_or_release
   filters:
     branches:
@@ -46,8 +32,9 @@ workflows:
           context: hokusai
           name: build
 
-      - test:
+      - artsy-remote-docker/test:
           context: hokusai
+          name: test
           <<: *not_staging_or_release
           requires:
             - build
