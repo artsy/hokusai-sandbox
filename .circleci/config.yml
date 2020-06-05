@@ -26,15 +26,31 @@ only_release: &only_release
 workflows:
   default:
     jobs:
-      # pre-staging
+
+
+      - hokusai/test:
+          name: build-and-test
+          executor: hokusai/beta
+          filename: ./hokusai/test.yml.j2
+          <<: *not_staging_or_release
+
+      - hokusai/push:
+          name: push-staging-image
+          executor: hokusai/beta
+          <<: *only_master
+          requires:
+            - build-and-test
+
       - artsy-remote-docker/build:
           <<: *not_staging_or_release
           context: hokusai
-          name: build
+          executor: hokusai/beta
+          name: remote-build
 
       - artsy-remote-docker/test:
           context: hokusai
-          name: test
+          executor: hokusai/beta
+          name: test-remote-build
           <<: *not_staging_or_release
           requires:
             - build
@@ -44,7 +60,8 @@ workflows:
           executor: hokusai/beta
           project-name: hokusai-sandbox
           requires:
-            - test
+            - build-and-test
+            - test-remote-build
 
       # release
       - hokusai/deploy-production:
