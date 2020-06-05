@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   hokusai: artsy/hokusai@dev:7140b0e073a71f7f54959c178c0caec5
-  artsy-remote-docker: artsy/remote-docker@dev:7140b0e073a71f7f54959c178c0caec5
+  artsy-remote-docker: artsy/remote-docker@dev: 7140b0e073a71f7f54959c178c0caec5
 
 jobs:
   test:
@@ -47,6 +47,7 @@ workflows:
           name: build
 
       - test:
+          context: hokusai
           <<: *not_staging_or_release
 
       # staging
