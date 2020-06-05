@@ -53,7 +53,7 @@ workflows:
           name: test-remote-build
           <<: *not_staging_or_release
           requires:
-            - build
+            - remote-build
 
       - hokusai/deploy-staging:
           <<: *only_master
