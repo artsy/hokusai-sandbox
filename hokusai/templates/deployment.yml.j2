@@ -4,10 +4,6 @@ kind: Deployment
 metadata:
   name: {{ project_name }}-web
   namespace: default
-  labels:
-    app: {{ project_name }}
-    component: web
-    layer: application
 spec:
   replicas: 1
   selector:
