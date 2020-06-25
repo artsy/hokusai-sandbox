@@ -6,12 +6,35 @@ import (
 	"os"
 	"fmt"
 	"log"
+	"strings"
 	"net/http"
 	"time"
 	"github.com/streadway/amqp"
 )
 
+func formatRequest(r *http.Request) string {
+ // Create return string
+ var request []string
+ // Add the request string
+ url := fmt.Sprintf("%v %v %v", r.Method, r.URL, r.Proto)
+ request = append(request, url)
+ //  Add the Remote Address
+ request = append(request, fmt.Sprintf("Remote Address: %v", r.RemoteAddr))
+ // Add the host
+ request = append(request, fmt.Sprintf("Host: %v", r.Host))
+ // Add headers
+ for name, headers := range r.Header {
+   for _, h := range headers {
+     request = append(request, fmt.Sprintf("%v: %v", name, h))
+   }
+ }
+  // Return the request as a string
+  return strings.Join(request, ", ")
+}
+	
+
 func root(w http.ResponseWriter, r *http.Request) {
+	log.Printf(formatRequest(r))
 	fmt.Fprintf(w, "Hello, world!")
 }
 
