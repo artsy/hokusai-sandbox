@@ -7,6 +7,7 @@ ADD . /app
 WORKDIR /app
 
 RUN go get github.com/streadway/amqp
+RUN go build client.go
 RUN go build server.go
 
 ENV PORT 8080
