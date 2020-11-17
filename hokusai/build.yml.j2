@@ -2,7 +2,4 @@
 version: '2.4'
 services:
   {{ project_name }}:
-    build:
-      context: ../
-    image: "hokusai_hokusai-sandbox:${BUILD_TAG:-latest}"
-
+{% include 'templates/docker-compose-service.yml.j2' %}
