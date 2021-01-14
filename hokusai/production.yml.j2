@@ -81,6 +81,8 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: {{ project_name }}
+  annotations:
+    nginx.ingress.kubernetes.io/whitelist-source-range: "{% raw %}{{ externalIngressAllowSourceIP|join(',') }}{% endraw %}"
 spec:
   ingressClassName: nginx
   rules:
