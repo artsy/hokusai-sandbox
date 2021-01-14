@@ -82,7 +82,7 @@ kind: Ingress
 metadata:
   name: {{ project_name }}
   annotations:
-    nginx.ingress.kubernetes.io/whitelist-source-range: "{{ externalIngressAllowSourceIP|join(',') }}"
+    nginx.ingress.kubernetes.io/whitelist-source-range: "{% raw %}{{ externalIngressAllowSourceIP|join(',') }}{% endraw %}"
 spec:
   ingressClassName: nginx
   rules:
