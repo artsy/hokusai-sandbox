@@ -21,3 +21,4 @@ Sandbox app for experimenting with Hokusai
 ## Running tests
 
 `hokusai test`
+
