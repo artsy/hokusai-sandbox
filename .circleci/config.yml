@@ -31,7 +31,6 @@ workflows:
       - hokusai/test:
           name: build-and-test
           executor: hokusai/beta
-          filename: ./hokusai/test.yml.j2
           <<: *not_staging_or_release
 
       - hokusai/push:
