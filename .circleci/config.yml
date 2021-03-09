@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  hokusai: artsy/hokusai@0.7.7
+  hokusai: artsy/hokusai@dev:0cfdec672fef8576135156174cde1294
   artsy-remote-docker: artsy/remote-docker@0.1.9
 
 not_staging_or_release: &not_staging_or_release
