@@ -40,7 +40,7 @@ spec:
 {% filter indent(width=6, first=True) %}{% include 'templates/dns.yml.j2' %}{% endfilter %}
 
 ---
-apiVersion: autoscaling/v1
+apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ project_name }}-web
@@ -51,8 +51,17 @@ spec:
     kind: Deployment
     name: {{ project_name }}-web
   minReplicas: 1
-  maxReplicas: 1
-  targetCPUUtilizationPercentage: 70
+  maxReplicas: 2
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 1800
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 70
+        type: Utilization
+    type: Resource
 
 ---
 apiVersion: v1
