@@ -135,10 +135,10 @@ spec:
                 - configMapRef:
                     name: {{ project_name }}-environment
               args: ["bin/foo.sh"]
+              volumeMounts:
+                - name: data
+                  mountPath: /tmp/data
           restartPolicy: Never
-          volumeMounts:
-            - name: data
-              mountPath: /tmp/data
           volumes:
             - name: data
               persistentVolumeClaim:
