@@ -119,6 +119,7 @@ spec:
           containers:
             - name: {{ project_name }}-cron
               image: {{ project_repo }}:staging
+              imagePullPolicy: Always
               envFrom:
                 - configMapRef:
                     name: {{ project_name }}-environment
