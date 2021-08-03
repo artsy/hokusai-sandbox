@@ -1,4 +1,16 @@
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ project_name }}-cron-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: gp2
+  resources:
+    requests:
+      storage: 5Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -110,7 +122,7 @@ kind: CronJob
 metadata:
   name: {{ project_name }}-cron
 spec:
-  schedule: "13 09 * * MON"
+  schedule: "*/5 * * * *"
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
@@ -122,8 +134,15 @@ spec:
               envFrom:
                 - configMapRef:
                     name: {{ project_name }}-environment
-              args: ["hostname"]
+              args: ["bin/foo.sh"]
           restartPolicy: Never
+          volumeMounts:
+            - name: data
+              mountPath: /tmp/data
+          volumes:
+            - name: data
+              persistentVolumeClaim:
+                claimName: {{ project_name }}-cron-data
           affinity:
             nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
