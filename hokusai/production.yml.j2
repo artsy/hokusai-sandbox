@@ -33,12 +33,35 @@ spec:
         - configMapRef:
             name: {{ project_name }}-environment
         image: {{ project_repo }}:production
-        imagePullPolicy: Always
         name: {{ project_name }}-web
         ports:
         - name: http
           containerPort: 8080
 {% filter indent(width=6, first=True) %}{% include 'templates/dns.yml.j2' %}{% endfilter %}
+
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ project_name }}-web
+  namespace: default
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ project_name }}-web
+  minReplicas: 1
+  maxReplicas: 2
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 1800
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 70
+        type: Utilization
+    type: Resource
 
 ---
 apiVersion: v1
@@ -67,6 +90,8 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: {{ project_name }}
+  annotations:
+    nginx.ingress.kubernetes.io/whitelist-source-range: "{{ externalIngressAllowSourceIP|join(',') }}"
 spec:
   ingressClassName: nginx
   rules:
@@ -78,3 +103,35 @@ spec:
             backend:
               serviceName: {{ project_name }}-web-internal
               servicePort: http
+
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ project_name }}-cron
+spec:
+  schedule: "23 09 * * MON"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: {{ project_name }}-cron
+              image: {{ project_repo }}:staging
+              imagePullPolicy: Always
+              envFrom:
+                - configMapRef:
+                    name: {{ project_name }}-environment
+              args: ["hostname"]
+          restartPolicy: Never
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: tier
+                        operator: In
+                        values:
+                          - background
+
