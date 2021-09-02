@@ -23,10 +23,19 @@ only_release: &only_release
     branches:
       only: release
 
+jobs:
+  test-resource-class:
+    docker:
+      - image: busybox
+    resource_class: medium+
+    steps:
+      - checkout
+
 workflows:
   default:
     jobs:
-
+      - test-resource-class:
+          <<: *not_staging_or_release
 
       - hokusai/test:
           name: build-and-test
