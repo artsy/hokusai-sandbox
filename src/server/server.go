@@ -4,6 +4,7 @@ import (
 	"os"
 	"fmt"
 	"log"
+        "strconv"
 	"strings"
 	"net/http"
 	"time"
@@ -29,10 +30,15 @@ func formatRequest(r *http.Request) string {
   // Return the request as a string
   return strings.Join(request, ", ")
 }
-	
 
 func root(w http.ResponseWriter, r *http.Request) {
 	log.Printf(formatRequest(r))
+        query := r.URL.Query()
+        delayparam, present := query["delay"] // delay=10
+        if present {
+          delay, _ := strconv.Atoi(delayparam[0])
+          time.Sleep(time.Duration(delay) * time.Second)
+        }
 	fmt.Fprintf(w, "Hello, world!")
 }
 
