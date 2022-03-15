@@ -11,11 +11,11 @@ not_staging_or_release: &not_staging_or_release
         - staging
         - release
 
-only_master: &only_master
+only_main: &only_main
   context: hokusai
   filters:
     branches:
-      only: master
+      only: main
 
 only_release: &only_release
   context: hokusai
@@ -37,7 +37,7 @@ workflows:
       - hokusai/push:
           name: push-staging-image
           executor: hokusai/beta
-          <<: *only_master
+          <<: *only_main
           requires:
             - build-and-test
 
@@ -56,7 +56,7 @@ workflows:
             - remote-build
 
       - hokusai/deploy-staging:
-          <<: *only_master
+          <<: *only_main
           executor: hokusai/beta
           project-name: hokusai-sandbox
           requires:
