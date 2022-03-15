@@ -1,6 +1,6 @@
 # hokusai-sandbox
 
-Sandbox app for experimenting with [Hokusai](https://github.com/artsy/hokusa)
+Sandbox app for experimenting with [Hokusai](https://github.com/artsy/hokusai)
 
 ## Setup
 
