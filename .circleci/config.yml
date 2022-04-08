@@ -27,7 +27,6 @@ workflows:
   default:
     jobs:
 
-
       - hokusai/test:
           name: build-and-test
           executor: hokusai/beta
