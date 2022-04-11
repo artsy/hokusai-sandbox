@@ -29,14 +29,14 @@ spec:
       name: {{ project_name }}-web
     spec:
       containers:
-      - envFrom:
-        - configMapRef:
-            name: {{ project_name }}-environment
-        image: {{ project_repo }}:staging
-        name: {{ project_name }}-web
-        ports:
-        - name: http
-          containerPort: 8080
+        - name: {{ project_name }}-web
+          envFrom:
+            - configMapRef:
+                name: {{ project_name }}-environment
+          image: {{ project_repo }}:staging
+          ports:
+            - name: http
+              containerPort: 8080
 {% filter indent(width=6, first=True) %}{% include 'templates/dns.yml.j2' %}{% endfilter %}
 
 ---
