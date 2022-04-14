@@ -1,8 +1,8 @@
 version: 2.1
 
 orbs:
-  hokusai: artsy/hokusai@volatile
-  artsy-remote-docker: artsy/remote-docker@volatile
+  hokusai: artsy/hokusai
+  artsy-remote-docker: artsy/remote-docker
 
 not_staging_or_release: &not_staging_or_release
   filters:
