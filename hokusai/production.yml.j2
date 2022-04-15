@@ -8,6 +8,7 @@ metadata:
     app: {{ project_name }}
     component: web
     layer: application
+    app.kubernetes.io/version: production
 spec:
   replicas: 1
   selector:
@@ -26,10 +27,16 @@ spec:
         app: {{ project_name }}
         component: web
         layer: application
+        app.kubernetes.io/version: production
       name: {{ project_name }}-web
     spec:
       containers:
         - name: {{ project_name }}-web
+          env:
+            - name: DD_VERSION
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['app.kubernetes.io/version']
           envFrom:
             - configMapRef:
                 name: {{ project_name }}-environment
