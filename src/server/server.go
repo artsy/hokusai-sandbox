@@ -33,6 +33,10 @@ func formatRequest(r *http.Request) string {
 
 func root(w http.ResponseWriter, r *http.Request) {
 	log.Printf(formatRequest(r))
+        if r.URL.Path != "/" {
+            http.NotFound(w, r)
+            return
+        }
         query := r.URL.Query()
         delayparam, present := query["delay"] // delay=10
         if present {
