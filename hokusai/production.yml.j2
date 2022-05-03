@@ -36,8 +36,18 @@ spec:
             name: {{ project_name }}-environment
         image: {{ project_repo }}:production
         ports:
-        - name: http
-          containerPort: 8080
+        - name: sandbox-http
+           containerPort: 8080
+        readinessProbe:
+          httpGet:
+            port: sandbox-http
+            path: /ping
+            httpHeaders:
+              - name: X-Forwarded-Proto
+                value: https
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
         env:
         - name: DD_VERSION
           valueFrom:
@@ -86,7 +96,7 @@ spec:
   - port: 8080
     protocol: TCP
     name: http
-    targetPort: http
+    targetPort: sandbox-http
   selector:
     app: {{ project_name }}
     layer: application
