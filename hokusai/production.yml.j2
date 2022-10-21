@@ -49,6 +49,10 @@ spec:
           periodSeconds: 10
           timeoutSeconds: 5
         env:
+        - name: DATADOG_AGENT_HOSTNAME
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
         - name: DD_VERSION
           valueFrom:
             fieldRef:
@@ -58,6 +62,21 @@ spec:
         options:
         - name: ndots
           value: '1'
+      tolerations:
+        - key: reserved
+          operator: Equal
+          value: spot
+          effect: NoSchedule
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: tier
+                operator: In
+                values:
+                - foreground
+                - foreground-spot
 ---
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
