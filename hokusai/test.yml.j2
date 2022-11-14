@@ -6,3 +6,6 @@ services:
     command: ["go", "test", "./src/server/"]
     environment:
       - CGO_ENABLED=0
+  {{ project_name }}-shell:
+{% include 'templates/docker-compose-service.yml.j2' %}
+    command: ["sh", "-c", "exit 3"]
