@@ -1,0 +1,6 @@
+bases:
+- https://github.com/artsy/artsy-hokusai-templates//kustomize/base?ref=artsyjian/kustomize
+resources:
+- others.yml
+patchesStrategicMerge:
+- patch.yml

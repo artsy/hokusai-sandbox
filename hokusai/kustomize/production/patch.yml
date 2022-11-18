@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hokusai-sandbox-web
+  labels:
+    app.kubernetes.io/version: production
+spec:
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/version: production
+    spec:
+      containers:
+      - name: hokusai-sandbox-web
+        image: foo-ecr-repo:production
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hokusai-sandbox-web
+spec:
+  minReplicas: 1
+  maxReplicas: 2
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: hokusai-sandbox
+spec:
+  rules:
+  - host: hokusai-sandbox.artsy.net
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          serviceName: hokusai-sandbox-web-internal
+          servicePort: http
