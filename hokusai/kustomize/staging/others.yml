@@ -2,7 +2,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: hokusai-sandbox-cron
+  name: cron
 spec:
   schedule: 23 09 * * MON
   concurrencyPolicy: Forbid
@@ -11,8 +11,8 @@ spec:
       template:
         spec:
           containers:
-          - name: hokusai-sandbox-cron
-            image: foo-ecr-repo:staging
+          - name: cron
+            image: project-name-ecr-repo:staging
             imagePullPolicy: Always
             envFrom:
             - configMapRef:

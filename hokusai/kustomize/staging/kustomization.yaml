@@ -1,7 +1,30 @@
 bases:
 - https://github.com/artsy/artsy-hokusai-templates//kustomize/base?ref=artsyjian/kustomize
+
 resources:
 - others.yml
-namePrefix: hokusai-sandbox-
+
 patchesStrategicMerge:
 - patch.yml
+
+patchesJson6902:
+- target:
+    kind: Ingress
+    name: ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: hokusai-sandbox-staging.artsy.net
+    - op: replace
+      path: /spec/rules/0/http/paths/0/backend/serviceName
+      value: hokusai-sandbox-web-internal
+
+namePrefix: hokusai-sandbox-
+
+images:
+- name: project-name-ecr-repo
+  newName: 012345678901.dkr.ecr.us-east-1.amazonaws.com/hokusai-sandbox
+  newTag: staging
+
+transformers:
+- transform.yml
