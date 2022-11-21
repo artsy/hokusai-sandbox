@@ -1,8 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  labels:
+    app: hokusai-sandbox
+    app.kubernetes.io/version: staging
+spec:
+  selector:
+    matchLabels:
+      app: hokusai-sandbox
+  template:
+    metadata:
+      labels:
+        app: hokusai-sandbox
+        app.kubernetes.io/version: staging
+      name: hokusai-sandbox-web
+    spec:
+      containers:
+      - name: hokusai-sandbox-web
+        envFrom:
+        - configMapRef:
+            name: hokusai-sandbox-environment
+        image: 012345678901.dkr.ecr.us-east-1.amazonaws.com/hokusai-sandbox:staging
+      tolerations:
+        - key: reserved
+          operator: Equal
+          value: spot
+          effect: NoSchedule
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: tier
+                operator: In
+                values:
+                - foreground
+                - foreground-spot
 ---
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
   name: web
 spec:
+  scaleTargetRef:
+    name: hokusai-sandbox-web
   minReplicas: 1
   maxReplicas: 2
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: hokusai-sandbox
+  name: web-internal
+spec:
+  selector:
+    app: hokusai-sandbox
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ingress
+spec:
+  rules:
+  - host: hokusai-sandbox-staging.artsy.net
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          serviceName: hokusai-sandbox-web-internal
+          servicePort: http
