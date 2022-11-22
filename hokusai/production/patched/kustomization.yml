@@ -1,6 +1,9 @@
 bases:
 - https://github.com/artsy/artsy-hokusai-templates//kustomize/base?ref=artsyjian/kustomize
 
+patchesStrategicMerge:
+- patch.yml
+
 namePrefix: hokusai-sandbox-
 
 images:
