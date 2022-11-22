@@ -34,4 +34,4 @@ patchesJson6902:
       value: hokusai-sandbox-web-internal
 
 transformers:
-- transformers.yml
+- transform.yml
