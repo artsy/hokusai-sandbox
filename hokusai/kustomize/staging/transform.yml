@@ -12,6 +12,8 @@ fieldSpecs:
   kind: Service
 - path: spec/selector/matchLabels
   kind: Deployment
+- path: spec/template/metadata/labels
+  kind: Deployment
 ---
 apiVersion: builtin
 kind: LabelTransformer

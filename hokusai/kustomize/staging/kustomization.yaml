@@ -4,9 +4,6 @@ bases:
 resources:
 - others.yml
 
-patchesStrategicMerge:
-- patch.yml
-
 patchesJson6902:
 - target:
     kind: Ingress
@@ -18,11 +15,21 @@ patchesJson6902:
     - op: replace
       path: /spec/rules/0/http/paths/0/backend/serviceName
       value: hokusai-sandbox-web-internal
+- target:
+    kind: Deployment
+    name: web
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/name
+      value: hokusai-sandbox-web
+    - op: replace
+      path: /spec/template/spec/containers/0/envFrom/0/configMapRef/name
+      value: hokusai-sandbox-environment
 
 namePrefix: hokusai-sandbox-
 
 images:
-- name: project-name-ecr-repo
+- name: artsyapp-ecr-repo
   newName: 012345678901.dkr.ecr.us-east-1.amazonaws.com/hokusai-sandbox
   newTag: staging
 
