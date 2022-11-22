@@ -2,23 +2,22 @@
 apiVersion: builtin
 kind: LabelTransformer
 metadata:
-  name: notImportantHere
+  name: app-label
 labels:
   app: hokusai-sandbox
 fieldSpecs:
 - path: metadata/labels
-- path: spec/selector
-  version: v1
-  kind: Service
 - path: spec/selector/matchLabels
   kind: Deployment
 - path: spec/template/metadata/labels
   kind: Deployment
+- path: spec/selector
+  kind: Service
 ---
 apiVersion: builtin
 kind: LabelTransformer
 metadata:
-  name: notImportantHere2
+  name: version-label
 labels:
   app.kubernetes.io/version: staging
 fieldSpecs:
