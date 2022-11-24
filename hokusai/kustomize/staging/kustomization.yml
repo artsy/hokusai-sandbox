@@ -1,0 +1,9 @@
+resources:
+- main
+- cron
+- unkustomized.yml
+
+images:
+- name: artsyapp-ecr-repo
+  newName: 012345678901.dkr.ecr.us-east-1.amazonaws.com/hokusai-sandbox
+  newTag: staging

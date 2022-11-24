@@ -1,0 +1,15 @@
+resources:
+- https://github.com/artsy/artsy-hokusai-templates//kustomize/base/cron?ref=artsyjian/kustomize
+
+patchesStrategicMerge:
+- patch.yml
+
+namePrefix: hokusai-sandbox-foo-
+
+patches:
+  - target:
+      kind: CronJob
+    patch: |-
+      - op: replace
+        path: /spec/jobTemplate/spec/template/spec/containers/0/name
+        value: hokusai-sandbox-foo-cron

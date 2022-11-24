@@ -1,0 +1,15 @@
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: cron
+spec:
+  schedule: 23 10 * * MON
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: cron
+            args:
+            - barcmd

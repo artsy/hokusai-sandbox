@@ -1,0 +1,3 @@
+resources:
+- foo_cron
+- bar_cron
