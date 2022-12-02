@@ -1,5 +1,8 @@
 bases:
-- https://github.com/artsy/artsy-hokusai-templates//kustomize/base?ref=artsyjian/kustomize
+- https://github.com/artsy/artsy-hokusai-templates//kustomize/base_per_resource/deployment_base?ref=artsyjian/kustomize
+- https://github.com/artsy/artsy-hokusai-templates//kustomize/base_per_resource/hpa_base?ref=artsyjian/kustomize
+- https://github.com/artsy/artsy-hokusai-templates//kustomize/base_per_resource/service_base?ref=artsyjian/kustomize
+- https://github.com/artsy/artsy-hokusai-templates//kustomize/base_per_resource/ingress_base?ref=artsyjian/kustomize
 
 patchesStrategicMerge:
 - patch.yml
