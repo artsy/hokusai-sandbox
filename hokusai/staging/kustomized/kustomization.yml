@@ -1,8 +1,8 @@
 bases:
-- https://github.com/artsy/artsy-hokusai-templates//kustomize/base_per_resource/deployment_base?ref=artsyjian/kustomize
-- https://github.com/artsy/artsy-hokusai-templates//kustomize/base_per_resource/hpa_base?ref=artsyjian/kustomize
-- https://github.com/artsy/artsy-hokusai-templates//kustomize/base_per_resource/service_base?ref=artsyjian/kustomize
-- https://github.com/artsy/artsy-hokusai-templates//kustomize/base_per_resource/ingress_base?ref=artsyjian/kustomize
+- ../base/deployment_base
+- ../base/hpa_base
+- ../base/service_base
+- ../base/ingress_base
 
 namePrefix: hokusai-sandbox-
 

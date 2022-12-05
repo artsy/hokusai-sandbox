@@ -12,7 +12,7 @@ spec:
         spec:
           containers:
           - name: hokusai-sandbox-cron
-            image: 012345678901.dkr.ecr.us-east-1.amazonaws.com/hokusai-sandbox:staging
+            image: {{ project_repo }}:staging
             imagePullPolicy: Always
             envFrom:
             - configMapRef:
