@@ -4,37 +4,18 @@ bases:
 - ../base/service_base
 - ../base/ingress_base
 
-namePrefix: hokusai-sandbox-
-
 images:
-- name: artsyapp-ecr-repo
-  newName: 012345678901.dkr.ecr.us-east-1.amazonaws.com/hokusai-sandbox
+- name: {{ project_repo }}
   newTag: staging
 
 patchesJson6902:
 - target:
-    kind: Deployment
-    name: web
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/containers/0/name
-      value: hokusai-sandbox-web
-    - op: replace
-      path: /spec/template/spec/containers/0/envFrom/0/configMapRef/name
-      value: hokusai-sandbox-environment
-- target:
     kind: Ingress
-    name: artsyapp
+    name: {{ project_name }}
   patch: |-
-    - op: replace
-      path: /metadata/name
-      value: hokusai-sandbox
     - op: replace
       path: /spec/rules/0/host
-      value: hokusai-sandbox-staging.artsy.net
-    - op: replace
-      path: /spec/rules/0/http/paths/0/backend/serviceName
-      value: hokusai-sandbox-web-internal
+      value: {{ project_name }}-staging.artsy.net
 
 transformers:
 - transform.yml
