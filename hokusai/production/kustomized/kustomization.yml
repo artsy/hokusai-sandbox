@@ -6,10 +6,3 @@ bases:
 
 patchesStrategicMerge:
 - patch.yml
-
-images:
-- name: {{ project_repo }}
-  newTag: production
-
-transformers:
-- transform.yml

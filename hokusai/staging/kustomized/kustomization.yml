@@ -4,10 +4,6 @@ bases:
 - ../base/service_base
 - ../base/ingress_base
 
-images:
-- name: {{ project_repo }}
-  newTag: staging
-
 patchesJson6902:
 - target:
     kind: Ingress
@@ -15,7 +11,4 @@ patchesJson6902:
   patch: |-
     - op: replace
       path: /spec/rules/0/host
-      value: {{ project_name }}-staging.artsy.net
-
-transformers:
-- transform.yml
+      value: {{ project_name }}-{{ environment }}.artsy.net

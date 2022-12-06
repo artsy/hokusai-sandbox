@@ -12,7 +12,7 @@ spec:
         spec:
           containers:
           - name: {{ project_name }}-cron
-            image: {{ project_repo }}:production
+            image: {{ project_repo }}:{{ environment }}
             imagePullPolicy: Always
             envFrom:
             - configMapRef:
