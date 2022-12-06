@@ -1,0 +1,16 @@
+bases:
+- ../base/cron_base
+
+patchesStrategicMerge:
+- patch.yml
+
+nameSuffix: -cron1
+
+patchesJson6902:
+- target:
+    kind: CronJob
+    name: {{ project_name }}-cron
+  patch: |-
+    - op: replace
+      path: /spec/jobTemplate/spec/template/spec/containers/0/name
+      value: {{ project_name }}-cron-cron1
