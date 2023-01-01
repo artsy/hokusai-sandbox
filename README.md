@@ -21,3 +21,4 @@ Sandbox app for experimenting with [Hokusai](https://github.com/artsy/hokusai).
 ## Running tests
 
 `hokusai test`
+test
