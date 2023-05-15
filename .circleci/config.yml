@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  hokusai: artsy/hokusai@volatile
+  hokusai: artsy/hokusai@dev:04ff62549a4b112854e973eaf5c4dfff
   artsy-remote-docker: artsy/remote-docker@volatile
 
 not_staging_or_release: &not_staging_or_release
@@ -61,6 +61,14 @@ workflows:
           requires:
             - build-and-test
             - test-remote-build
+          name: deploy-staging
+
+      - hokusai/git-push-staging-branch-job:
+          <<: *only_main
+          executor: hokusai/beta
+          project-name: hokusai-sandbox
+          requires:
+            - deploy-staging
 
       # release
       - hokusai/deploy-production:
