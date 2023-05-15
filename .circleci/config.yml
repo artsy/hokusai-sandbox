@@ -63,7 +63,7 @@ workflows:
             - test-remote-build
           name: deploy-staging
 
-      - hokusai/git-push-staging-branch-job
+      - hokusai/git-push-staging-branch-job:
           <<: *only_main
           executor: hokusai/beta
           project-name: hokusai-sandbox
