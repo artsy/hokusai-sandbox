@@ -1,3 +1,11 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: hokusai-sandbox
+  namespace: default
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -57,6 +65,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.labels['app.kubernetes.io/version']
+      serviceAccountName: hokusai-sandbox
       dnsPolicy: ClusterFirst
       dnsConfig:
         options:
