@@ -53,6 +53,8 @@ spec:
         envFrom:
         - configMapRef:
             name: {{ project_name }}-environment
+        - secretRef:
+            name: hokusai-sandbox
         image: {{ project_repo }}:staging
         ports:
         - name: sandbox-http
