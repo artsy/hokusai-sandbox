@@ -1,3 +1,22 @@
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: hokusai-sandbox
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: vault
+    kind: ClusterSecretStore
+  target:
+    name: hokusai-sandbox
+    creationPolicy: Owner
+  data:
+  - secretKey: name
+    remoteRef:
+      key: hokusai-sandbox
+      property: name
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
