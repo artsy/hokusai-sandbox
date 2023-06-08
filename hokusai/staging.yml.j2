@@ -10,9 +10,13 @@ spec:
   target:
     name: hokusai-sandbox
     creationPolicy: Owner
-  dataFrom:
-    - extract:
-        key: kubernetes/apps/hokusai-sandbox/secrets
+  data:
+  - secretKey: key3
+    remoteRef:
+      key: kubernetes/apps/hokusai-sandbox/key3
+  - secretKey: key4
+    remoteRef:
+      key: kubernetes/apps/hokusai-sandbox/key4
 
 ---
 apiVersion: apps/v1
