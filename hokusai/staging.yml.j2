@@ -3,7 +3,7 @@ kind: ExternalSecret
 metadata:
   name: hokusai-sandbox
 spec:
-  refreshInterval: 1h
+  refreshInterval: 5m
   secretStoreRef:
     name: vault
     kind: ClusterSecretStore
@@ -11,10 +11,10 @@ spec:
     name: hokusai-sandbox
     creationPolicy: Owner
   data:
-  - secretKey: name
+  - secretKey: key1
     remoteRef:
-      key: hokusai-sandbox
-      property: name
+      key: kubernetes/apps/hokusai-sandbox/secrets
+      property: key1
 
 ---
 apiVersion: apps/v1
