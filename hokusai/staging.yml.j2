@@ -10,6 +10,16 @@ spec:
   target:
     name: hokusai-sandbox
     creationPolicy: Owner
+    template:
+      engineVersion: v2
+      templateFrom:
+      - target: Data
+        {% raw %}
+        literal: |
+          {{ range $key, $value := . }}
+          {{$key | upper}}: ${{$value}}
+          {{ end }}
+        {% endraw %}
   dataFrom:
   - find:
       name:
