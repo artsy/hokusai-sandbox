@@ -11,10 +11,13 @@ spec:
     name: hokusai-sandbox
     creationPolicy: Owner
   dataFrom:
-    - extract:
-        key: kubernetes/apps/hokusai-sandbox/key3
-    - extract:
-        key: kubernetes/apps/hokusai-sandbox/key4
+  - find:
+      name:
+        regexp: "kubernetes/apps/hokusai-sandbox/*"
+    rewrite:
+    - regexp:
+        source: "kubernetes/apps/hokusai-sandbox/(.*)"
+        target: "$1"
 
 ---
 apiVersion: apps/v1
