@@ -70,7 +70,6 @@ spec:
             name: {{ project_name }}-environment
         - secretRef:
             name: hokusai-sandbox
-            optional: true
         image: {{ project_repo }}:production
         ports:
         - name: sandbox-http
