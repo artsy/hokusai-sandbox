@@ -71,6 +71,7 @@ spec:
         - secretRef:
             name: hokusai-sandbox
         image: {{ project_repo }}:production
+        imagePullPolicy: Always
         ports:
         - name: sandbox-http
           containerPort: 8080
