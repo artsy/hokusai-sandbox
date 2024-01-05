@@ -70,6 +70,7 @@ spec:
         - secretRef:
             name: hokusai-sandbox
         image: {{ project_repo }}:staging
+        imagePullPolicy: Always
         ports:
         - name: sandbox-http
           containerPort: 8080
@@ -153,6 +154,7 @@ spec:
         - secretRef:
             name: hokusai-sandbox
         image: {{ project_repo }}:canary
+        imagePullPolicy: Always
         ports:
         - name: sandbox-http
           containerPort: 8080
@@ -284,6 +286,13 @@ spec:
             name: {{ project_name }}-web-internal
             port:
               name: http
+      - path: /incoming
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ project_name }}-web-internal
+            port:
+              name: http
 
 ---
 apiVersion: networking.k8s.io/v1
@@ -293,13 +302,20 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/whitelist-source-range: {{ externalIngressAllowSourceIP|join(',') }}
     nginx.ingress.kubernetes.io/canary: "true"
-    nginx.ingress.kubernetes.io/canary-weight: "100"
+    nginx.ingress.kubernetes.io/canary-weight: "50"
 spec:
   ingressClassName: nginx
   rules:
   - host: {{ project_name }}-staging.artsy.net
     http:
       paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ project_name }}-web-canary-internal
+            port:
+              name: http
       - path: /incoming
         pathType: Prefix
         backend:
