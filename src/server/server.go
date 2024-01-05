@@ -46,6 +46,21 @@ func root(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Hello, world!")
 }
 
+func incoming(w http.ResponseWriter, r *http.Request) {
+	log.Printf(formatRequest(r))
+        if r.URL.Path != "/incoming" {
+            http.NotFound(w, r)
+            return
+        }
+        query := r.URL.Query()
+        delayparam, present := query["delay"] // delay=10
+        if present {
+          delay, _ := strconv.Atoi(delayparam[0])
+          time.Sleep(time.Duration(delay) * time.Second)
+        }
+	fmt.Fprintf(w, "Hello world from /incoming!")
+}
+
 func ping (w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "PONG")
 }
@@ -136,6 +151,7 @@ func sub(rabbitmq_host string) {
 
 func main() {
 	http.HandleFunc("/", root)
+	http.HandleFunc("/incoming", incoming)
 	http.HandleFunc("/ping", ping)
 	port := os.Getenv("PORT")
 	if len(port) == 0 {
