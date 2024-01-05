@@ -43,7 +43,7 @@ func root(w http.ResponseWriter, r *http.Request) {
           delay, _ := strconv.Atoi(delayparam[0])
           time.Sleep(time.Duration(delay) * time.Second)
         }
-	fmt.Fprintf(w, "Hello, world!")
+	fmt.Fprintf(w, "Canary: Hello, world!")
 }
 
 func incoming(w http.ResponseWriter, r *http.Request) {
@@ -58,7 +58,7 @@ func incoming(w http.ResponseWriter, r *http.Request) {
           delay, _ := strconv.Atoi(delayparam[0])
           time.Sleep(time.Duration(delay) * time.Second)
         }
-	fmt.Fprintf(w, "Hello world from /incoming!")
+	fmt.Fprintf(w, "Canary: Hello world from /incoming!")
 }
 
 func ping (w http.ResponseWriter, r *http.Request) {
