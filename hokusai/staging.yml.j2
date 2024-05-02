@@ -1,3 +1,36 @@
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: hokusai-sandbox
+spec:
+  refreshInterval: "5m"
+  secretStoreRef:
+    name: vault
+    kind: ClusterSecretStore
+  target:
+    name: hokusai-sandbox
+    creationPolicy: Owner
+    deletionPolicy: Merge
+    template:
+      engineVersion: v2
+      templateFrom:
+      - target: Data
+        {% raw %}
+        literal: |
+          {{ range $key, $value := . }}
+          {{$key}}: {{$value | fromJson | values | first}}
+          {{ end }}
+        {% endraw %}
+  dataFrom:
+  - find:
+      name:
+        regexp: "kubernetes/apps/hokusai-sandbox/*"
+    rewrite:
+    - regexp:
+        source: "kubernetes/apps/hokusai-sandbox/(.*)"
+        target: "$1"
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -34,7 +67,10 @@ spec:
         envFrom:
         - configMapRef:
             name: {{ project_name }}-environment
+        - secretRef:
+            name: hokusai-sandbox
         image: {{ project_repo }}:staging
+        imagePullPolicy: Always
         ports:
         - name: sandbox-http
           containerPort: 8080
@@ -122,7 +158,7 @@ spec:
     component: web
   type: ClusterIP
 ---
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ project_name }}
@@ -137,10 +173,12 @@ spec:
       - path: /
         pathType: Prefix
         backend:
-          serviceName: {{ project_name }}-web-internal
-          servicePort: http
+          service:
+            name: {{ project_name }}-web-internal
+            port:
+              name: http
 ---
-apiVersion: batch/v1beta1
+apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: {{ project_name }}-cron

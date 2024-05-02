@@ -61,6 +61,7 @@ workflows:
           requires:
             - build-and-test
             - test-remote-build
+          name: deploy-staging
 
       # release
       - hokusai/deploy-production:
