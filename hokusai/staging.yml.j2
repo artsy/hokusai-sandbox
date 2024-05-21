@@ -23,8 +23,9 @@ spec:
         {% endraw %}
   dataFrom:
   - find:
+      path: kubernetes/apps/hokusai-sandbox
       name:
-        regexp: "kubernetes/apps/hokusai-sandbox/*"
+        regexp: ".*"
     rewrite:
     - regexp:
         source: "kubernetes/apps/hokusai-sandbox/(.*)"
