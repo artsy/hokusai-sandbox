@@ -1,4 +1,3 @@
----
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
@@ -24,8 +23,9 @@ spec:
         {% endraw %}
   dataFrom:
   - find:
+      path: kubernetes/apps/hokusai-sandbox
       name:
-        regexp: "kubernetes/apps/hokusai-sandbox/*"
+        regexp: ".*"
     rewrite:
     - regexp:
         source: "kubernetes/apps/hokusai-sandbox/(.*)"
@@ -41,7 +41,7 @@ metadata:
     app: {{ project_name }}
     component: web
     layer: application
-    app.kubernetes.io/version: production
+    app.kubernetes.io/version: staging
 spec:
   replicas: 1
   selector:
@@ -60,7 +60,7 @@ spec:
         app: {{ project_name }}
         component: web
         layer: application
-        app.kubernetes.io/version: production
+        app.kubernetes.io/version: staging
       name: {{ project_name }}-web
     spec:
       containers:
@@ -70,7 +70,7 @@ spec:
             name: {{ project_name }}-environment
         - secretRef:
             name: hokusai-sandbox
-        image: {{ project_repo }}:production
+        image: {{ project_repo }}:staging
         imagePullPolicy: Always
         ports:
         - name: sandbox-http
@@ -168,7 +168,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: {{ project_name }}.artsy.net
+  - host: {{ project_name }}-staging.artsy.net
     http:
       paths:
       - path: /
