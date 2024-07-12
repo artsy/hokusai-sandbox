@@ -32,12 +32,23 @@ spec:
     spec:
       initContainers:
       - name: setenv
-        image: busybox
+        image: 585031190124.dkr.ecr.us-east-1.amazonaws.com/opstools:jian-test
         command:
-        - /bin/sh
-        - -c
-        - |
-          echo "FOO=bar" >> /tmp/env/file
+        - python
+        - src/load_secrets_from_vault/load.py
+        - staging
+        - hokusai-sandbox
+        env:
+        - name: PORT
+          value: "8080"
+        - name: VAULT_HOST
+          value: "vault.stg.artsy.systems"
+        - name: VAULT_PORT
+          value: "8200"
+        - name: VAULT_KVV2_MOUNT_POINT
+          value: "kvv2"
+        - name: SECRETS_FILE
+          value: "/tmp/env/file"
         volumeMounts:
         - name: tmp
           mountPath: /tmp/env
@@ -78,6 +89,7 @@ spec:
         options:
         - name: ndots
           value: '1'
+      serviceAccountName: hokusai-sandbox
       tolerations:
         - key: reserved
           operator: Equal
