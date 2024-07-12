@@ -14,4 +14,4 @@ ENV PORT 8080
 EXPOSE 8080
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
-CMD ["./server"]
+CMD ["./start_server.sh"]
