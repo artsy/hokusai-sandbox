@@ -1,5 +1,3 @@
 #!/usr/bin/env sh
-export $(cat /tmp/env/file | xargs)
-env
-#rm /tmp/env/file
+export $(cat /secrets/secrets | xargs)
 ./server

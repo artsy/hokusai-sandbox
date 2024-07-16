@@ -48,10 +48,10 @@ spec:
         - name: VAULT_KVV2_MOUNT_POINT
           value: "kvv2"
         - name: SECRETS_FILE
-          value: "/tmp/env/file"
+          value: "/secrets/secrets"
         volumeMounts:
-        - name: tmp
-          mountPath: /tmp/env
+        - name: secrets
+          mountPath: /secrets
       containers:
       - name: {{ project_name }}-web
         envFrom:
@@ -82,8 +82,9 @@ spec:
             fieldRef:
               fieldPath: metadata.labels['app.kubernetes.io/version']
         volumeMounts:
-        - name: tmp
-          mountPath: /tmp/env
+        - name: secrets
+          mountPath: /secrets
+          readOnly: true
       dnsPolicy: ClusterFirst
       dnsConfig:
         options:
@@ -106,7 +107,7 @@ spec:
                 - foreground
                 - foreground-spot
       volumes:
-      - name: tmp
+      - name: secrets
         emptyDir: {}
 ---
 apiVersion: autoscaling/v2beta2
