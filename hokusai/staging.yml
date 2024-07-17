@@ -57,7 +57,7 @@ spec:
         envFrom:
         - configMapRef:
             name: {{ project_name }}-environment
-        image: {{ project_repo }}:staging
+        image: {{ project_repo }}:jian-test
         imagePullPolicy: Always
         ports:
         - name: sandbox-http
