@@ -38,15 +38,9 @@ spec:
         - src/load_secrets_from_vault/load.py
         - staging
         - hokusai-sandbox
-        env:
-        - name: VAULT_HOST
-          value: "vault.stg.artsy.systems"
-        - name: VAULT_PORT
-          value: "8200"
-        - name: VAULT_KVV2_MOUNT_POINT
-          value: "kvv2"
-        - name: SECRETS_FILE
-          value: "/secrets/secrets"
+        envFrom:
+        - configMapRef:
+            name: secrets-config
         volumeMounts:
         - name: secrets
           mountPath: /secrets
