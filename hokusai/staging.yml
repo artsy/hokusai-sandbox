@@ -39,8 +39,6 @@ spec:
         - staging
         - hokusai-sandbox
         env:
-        - name: PORT
-          value: "8080"
         - name: VAULT_HOST
           value: "vault.stg.artsy.systems"
         - name: VAULT_PORT
