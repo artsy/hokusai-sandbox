@@ -53,7 +53,7 @@ spec:
         - sh
         - -c
         - export $(cat /secrets/secrets | xargs) && ./server
-        image: {{ project_repo }}:jian-test
+        image: {{ project_repo }}:staging
         imagePullPolicy: Always
         ports:
         - name: sandbox-http
