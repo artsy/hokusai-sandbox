@@ -57,9 +57,7 @@ spec:
         envFrom:
         - configMapRef:
             name: {{ project_name }}-environment
-        args:
-          - export $(cat /secrets/secrets | xargs) &&
-          - ./server
+        args: ["sh", "-c", "while true; do sleep 5; done"]
         image: {{ project_repo }}:jian-test
         imagePullPolicy: Always
         ports:
