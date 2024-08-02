@@ -33,6 +33,7 @@ spec:
       initContainers:
       - name: setenv
         image: 585031190124.dkr.ecr.us-east-1.amazonaws.com/opstools:jian-test
+        imagePullPolicy: Always
         command:
         - python
         - src/load_secrets_from_vault/load.py
