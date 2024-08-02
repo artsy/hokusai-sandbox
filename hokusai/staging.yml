@@ -32,7 +32,7 @@ spec:
     spec:
       initContainers:
       - name: setenv
-        image: 585031190124.dkr.ecr.us-east-1.amazonaws.com/opstools:jian-test
+        image: 585031190124.dkr.ecr.us-east-1.amazonaws.com/opstools:staging
         imagePullPolicy: Always
         command:
         - python
