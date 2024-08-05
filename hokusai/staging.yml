@@ -32,7 +32,8 @@ spec:
     spec:
       initContainers:
       - name: setenv
-        image: 585031190124.dkr.ecr.us-east-1.amazonaws.com/opstools:jian-test
+        image: 585031190124.dkr.ecr.us-east-1.amazonaws.com/opstools:staging
+        imagePullPolicy: Always
         command:
         - python
         - src/load_secrets_from_vault/load.py
@@ -52,7 +53,7 @@ spec:
         args:
         - sh
         - -c
-        - export $(cat /secrets/secrets | xargs) && ./server
+        - source /secrets/secrets && ./server
         image: {{ project_repo }}:staging
         imagePullPolicy: Always
         ports:
