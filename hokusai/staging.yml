@@ -50,10 +50,6 @@ spec:
         envFrom:
         - configMapRef:
             name: {{ project_name }}-environment
-        args:
-        - sh
-        - -c
-        - source /secrets/secrets && ./server
         image: {{ project_repo }}:staging
         imagePullPolicy: Always
         ports:
