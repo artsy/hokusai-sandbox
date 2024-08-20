@@ -1,7 +1,14 @@
 #!/bin/sh
 
-CMD=$1
-echo "$CMD"
-source /secrets/secrets
-"$CMD"
+CMD="$@"
 
+SECRETS_FILE_DIR=/secrets
+
+if [ -d "$SECRETS_FILE_DIR" ]
+then
+  echo "Sourcing secrets file..."
+  source "$SECRETS_FILE_DIR/secrets"
+fi
+
+echo "Running command: $CMD"
+$CMD
