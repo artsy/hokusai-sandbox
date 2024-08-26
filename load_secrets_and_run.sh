@@ -2,12 +2,10 @@
 
 CMD="$@"
 
-SECRETS_FILE_DIR=/secrets
-
-if [ -d "$SECRETS_FILE_DIR" ]
+if [ ! -z "$SECRETS_FILE" ]
 then
-  echo "Sourcing secrets file..."
-  source "$SECRETS_FILE_DIR/secrets"
+  echo "SECRETS_FILE env var is defined. Sourcing secrets file..."
+  source "$SECRETS_FILE"
 fi
 
 echo "Running command: $CMD"
