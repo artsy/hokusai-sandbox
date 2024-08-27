@@ -197,3 +197,10 @@ spec:
                     operator: In
                     values:
                     - background
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: hokusai-sandbox
+  namespace: default
