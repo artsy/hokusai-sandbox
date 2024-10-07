@@ -13,5 +13,5 @@ RUN go build src/server/server.go
 ENV PORT 8080
 EXPOSE 8080
 
-ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+ENTRYPOINT ["/usr/bin/dumb-init", "./load_secrets_and_run.sh"]
 CMD ["./server"]

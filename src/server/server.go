@@ -134,7 +134,9 @@ func sub(rabbitmq_host string) {
 	<-forever
 }
 
+
 func main() {
+        fmt.Println("BAR:", os.Getenv("BAR"))
 	http.HandleFunc("/", root)
 	http.HandleFunc("/ping", ping)
 	port := os.Getenv("PORT")
