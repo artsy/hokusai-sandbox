@@ -32,11 +32,12 @@ spec:
     spec:
       initContainers:
       - name: setenv
-        image: 585031190124.dkr.ecr.us-east-1.amazonaws.com/opstools:production
+        image: 585031190124.dkr.ecr.us-east-1.amazonaws.com/fortress:production
         imagePullPolicy: Always
         command:
         - python
-        - src/load_secrets_from_vault/load.py
+        - src/load/load.py
+        - kubernetes
         - production
         - hokusai-sandbox
         envFrom:
@@ -50,6 +51,8 @@ spec:
         envFrom:
         - configMapRef:
             name: {{ project_name }}-environment
+        - configMapRef:
+            name: secrets-config
         image: {{ project_repo }}:production
         imagePullPolicy: Always
         ports:
@@ -185,6 +188,8 @@ spec:
             envFrom:
             - configMapRef:
                 name: {{ project_name }}-environment
+            - configMapRef:
+                name: secrets-config
             args:
             - hostname
           restartPolicy: Never
