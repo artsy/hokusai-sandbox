@@ -154,27 +154,6 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ project_name }}
-  annotations:
-    nginx.ingress.kubernetes.io/whitelist-source-range: {{ externalIngressAllowSourceIP|join(',') }}
-spec:
-  ingressClassName: nginx
-  rules:
-  - host: {{ project_name }}-staging.artsy.net
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: {{ project_name }}-web-internal
-            port:
-              name: http
-
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
   name: {{ project_name }}-2025
   annotations:
     nginx.ingress.kubernetes.io/whitelist-source-range: {{ externalIngressAllowSourceIP|join(',') }}
