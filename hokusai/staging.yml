@@ -58,6 +58,12 @@ spec:
         ports:
         - name: sandbox-http
           containerPort: 8080
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+          limits:
+            memory: 256Mi
         readinessProbe:
           httpGet:
             port: sandbox-http
@@ -149,15 +155,16 @@ spec:
     layer: application
     component: web
   type: ClusterIP
+
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ project_name }}
+  name: {{ project_name }}-2025
   annotations:
     nginx.ingress.kubernetes.io/whitelist-source-range: {{ externalIngressAllowSourceIP|join(',') }}
 spec:
-  ingressClassName: nginx
+  ingressClassName: external-nginx
   rules:
   - host: {{ project_name }}-staging.artsy.net
     http:
@@ -169,6 +176,7 @@ spec:
             name: {{ project_name }}-web-internal
             port:
               name: http
+
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -181,6 +189,22 @@ spec:
     spec:
       template:
         spec:
+          initContainers:
+          - name: setenv
+            image: 585031190124.dkr.ecr.us-east-1.amazonaws.com/fortress:staging
+            imagePullPolicy: Always
+            command:
+            - python
+            - src/load/load.py
+            - kubernetes
+            - staging
+            - hokusai-sandbox
+            envFrom:
+            - configMapRef:
+                name: secrets-config
+            volumeMounts:
+            - name: secrets
+              mountPath: /secrets
           containers:
           - name: {{ project_name }}-cron
             image: {{ project_repo }}:staging
@@ -192,7 +216,12 @@ spec:
                 name: secrets-config
             args:
             - hostname
+            volumeMounts:
+            - name: secrets
+              mountPath: /secrets
+              readOnly: true
           restartPolicy: Never
+          serviceAccountName: hokusai-sandbox
           affinity:
             nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
@@ -202,3 +231,6 @@ spec:
                     operator: In
                     values:
                     - background
+          volumes:
+          - name: secrets
+            emptyDir: {}
