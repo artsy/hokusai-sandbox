@@ -107,7 +107,7 @@ spec:
         emptyDir: {}
 
 ---
-apiVersion: autoscaling/v2beta
+apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ project_name }}-web
