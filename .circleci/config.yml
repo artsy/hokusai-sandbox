@@ -40,11 +40,12 @@ workflows:
           requires:
             - build-and-test
 
-      - artsy-remote-docker/build:
+      - artsy-remote-docker/buildx-build-push:
           <<: *not_staging_or_release
           context: hokusai
           executor: hokusai/beta
           name: remote-build
+          resource_class: medium
 
       - artsy-remote-docker/test:
           context: hokusai
